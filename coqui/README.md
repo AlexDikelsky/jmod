@@ -1,5 +1,0 @@
-# Coqui
-
-## Build instructions
-
-TODO
