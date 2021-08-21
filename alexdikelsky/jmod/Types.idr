@@ -32,7 +32,7 @@ public export
 Show Expr where
   show (Array0 z) = show z
   show (Array1 k) = "[" ++ (foldr (\x => \y => x ++ " " ++ y) "" (map show k)) ++ "]"
-  show (Array2 k) = "[" ++ (foldr (\x => \y => x ++ "\n " ++ y) "" (map show k)) ++ "]"
+  show (Array2 k) = "{" ++ (foldr (\x => \y => x ++ "\n " ++ y) "" (map show k)) ++ "}"
   show (ConsList k) = "(" ++ (foldr (\x => \y => x ++ " " ++ y) "" (map show k)) ++ ")"
   show (Function _) = "Function"
   show (Symbol k) = show k

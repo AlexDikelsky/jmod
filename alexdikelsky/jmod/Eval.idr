@@ -2,6 +2,7 @@ module Eval
 
 import Types
 import Functions
+import Fold
 
 import Data.Nat
 import Data.List
@@ -44,4 +45,5 @@ jValue k =
     ("+", Function add),
     ("*", Function mult),
     ("%", Function div),
-    ("i.", Function iota)]
+    ("i.", Function iota),
+    ("/", Function foldUse)]

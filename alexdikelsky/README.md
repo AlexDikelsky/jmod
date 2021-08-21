@@ -6,44 +6,45 @@ It also requires the rank of the some operators be specified,
 unlike J. For instance:
 
 ```
-> 3_4
-3_4
+> 3m4
+3m4
 
-> 5_4
-1_4
+> 5m4
+1m4
 
-> 1 + 3_4
-0_4
+> 1 + 3m4
+0m4
 
-> (+ 1 '(0 3_4 6_2))
-(1 0_4 1_2)
+> (+ 1 [0 3m4 6m2])
+(1 0m4 1m2)
 
-> ((" / 1) + '(1_2 0_2 1_2))
-0_2
+> ((" / 1) + '(1m2 0m2 1m2))
+0m2
 
-> (i. 4 4)
-(0_4 1_4 2_4 3_4)
+> (i. 4)
+[0 1 2 3]
 
-> (i. 4 2)
-(0_2 1_2 0_2 1_2)
+> (+ 0m4 (i. 8))
+[0m4 1m4 2m4 3m4 0m4 1m4 2m4 3m4 ]
 
-> (i. 4_2 2)
-Type error: First argument to i. should be [Number]
+
+> (i. 4m2 2)
+Type error
 
 > (:= y ($ '(2 2) (i. 4 4)))
 > y
-((0_4 1_4) 
- (2_4 3_4))
+((0m4 1m4) 
+ (2m4 3m4))
 
 > ((" / 0) + y)   NB. Sum across every element (doesn't do anything)
-((0_4 1_4) 
- (2_4 3_4))
+((0m4 1m4) 
+ (2m4 3m4))
 
 > ((" / 1) + y)   NB. Sum across the first list
-(1_4 1_4)
+(1m4 1m4)
 
 > ((" / 2) + y)   NB. Sym across the first column
-(2_4 0_4)
+(2m4 0m4)
 ```
 
 

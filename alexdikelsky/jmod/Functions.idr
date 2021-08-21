@@ -4,6 +4,9 @@ import Types
 import BinaryOperations
 import Fold
 
+import Debug.Trace
+
+
 mapUnless : (a -> Either b String) -> List a -> Either (List b) String
 mapUnless f [] = Left []
 mapUnless f (x :: xs) =
@@ -45,9 +48,6 @@ mapF : (NonRec -> NonRec -> Either NonRec String) ->
          (Either Expr String) 
          -> Expr 
          -> Either Expr String
-mapF f i (Array0 n) = Left $ Array0 n
-mapF f i (Array1 n) = Left $ Array1 n
-mapF f i (Array2 n) = Left $ Array2 n
 mapF f i (ConsList Nil) = i
 mapF f i (ConsList (x :: Nil)) = Left x -- check
 mapF f i (ConsList (x :: xs)) = 
@@ -80,7 +80,6 @@ mapF f i (ConsList (x :: xs)) =
      (Array2 k, Left (Array0 n)) => mapF f i (ConsList ((Array0 n) :: ((Array2 k) :: Nil)))
      (Array2 k, Left (Array1 n)) => mapF f i (ConsList ((Array1 n) :: ((Array2 k) :: Nil)))
      (a, b) => Right $ "First " ++ (show a) ++ " second " ++ (show b)
-
 mapF _ e _ = Right $ "Not implemented " ++ show e
 
 public export
@@ -90,7 +89,7 @@ iota (ConsList (Array0 (Natural x) :: Nil)) =
   Left $ Array1 $ case x of
        0 => []
        x => (map (\x => Natural (cast x)) [0 .. ((cast x) - 1)])
-iota _ = Right "sdf"
+iota _ = Right "Wrong argments applied to iota"
 
 public export
 add : Expr -> Either Expr String
@@ -103,3 +102,22 @@ mult = mapF multNumbers $ Left $ Array0 $ Natural 1
 public export
 div : Expr -> Either Expr String
 div = mapF divNumbers $ Left $ Array0 $ Natural 1
+
+
+public export
+fold : Expr -> Expr -> Expr -> Either Expr String
+fold (Function f) _ (Array0 l) = f (Array0 l)
+fold (Function f) i (Array1 Nil) = Left i
+fold (Function f) i (Array1 (x :: xs)) =
+  case fold (Function f) i (Array1 xs) of
+       Left r => f (ConsList [Array0 x, r])
+       Right r => Right r
+fold _ _ s = Right $ "Unimplemted fold on " ++ (show s)
+
+public export
+foldUse : Expr -> Either Expr String
+foldUse (ConsList ((Function f) :: (i :: (xs :: Nil)))) =
+  fold (Function f) i xs
+
+foldUse f = Right $ "Failed on folduse" ++ (show f)
+

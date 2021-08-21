@@ -40,44 +40,42 @@ main = do
 
   -- putStrLn $ show $ jValue $ ConsList [Symbol "*", Array1 [Natural 4, Natural 2], Array0 (Natural 3)]
 
-  putStrLn $ show $ jValue $ ConsList [Symbol "+", ConsList [Symbol "+", Array0 (Natural 1), Array1 [Natural 3, Natural 4]],
-                                                   ConsList [Symbol "+", Array0 (Natural 5), Array1 [Natural 3, Natural 4]]]
+  -- putStrLn $ show $ jValue $ ConsList [Symbol "+", ConsList [Symbol "+", Array0 (Natural 1), Array1 [Natural 3, Natural 4]],
+  --                                                  ConsList [Symbol "+", Array0 (Natural 5), Array1 [Natural 3, Natural 4]]]
 
-  putStrLn $ show $ ConsList [Symbol "+", ConsList [Symbol "+", Array0 (Natural 1), Array1 [Natural 3, Natural 4]],
-                                                   ConsList [Symbol "+", Array0 (Natural 5), Array1 [Natural 3, Natural 4]]]
-
-
-  putStrLn $ show $ jValue $ ConsList [Symbol "i.", Array0 (Natural 4)]
-  putStrLn $ show $ jValue $ ConsList [Symbol "i.", Array0 (Natural 0)]
-  putStrLn $ show $ jValue $ ConsList [Symbol "i.", Array0 (Natural 1)]
-
-  -- putStrLn $ show $ jValue $ ConsList [Symbol "+", ConsList [Symbol "+", Array0 (Natural 1), Array1 [Natural 3, Natural 4]]]
-  -- putStrLn $ show $ ConsList [Symbol "+", ConsList [Symbol "+", Array0 (Natural 1), Array1 [Natural 3, Natural 4]]]
-
-  
-  putStrLn $ show $ parseExpr "(asdf asdf)"
-  putStrLn $ show $ parseExpr "[asdf asdf]"
-  putStrLn $ show $ parseExpr "[1 3]"
-  putStrLn $ show $ parseExpr "[[1 3] [4 5]]"
-  putStrLn $ show $ parseExpr "[[1 3] [4 5] 4]"
-  putStrLn $ show $ parseExpr "[1m3 4 m 4]"
-  putStrLn $ show $ parseExpr "[1m3 4m4]"
-
-  putStrLn $ test "(+ [1 3] [4 5])"
-  putStrLn $ show $ parseExpr "(* 3 [4 5])"
-  putStrLn $ test "(* 3 [4 5])"
-  putStrLn $ test "(* 3 (i. 5))"
-  -- putStrLn $ test "(* 1m10 (i. 5))"
-
-  putStrLn $ test "(* 2m4 (i. 5))"
-  putStrLn $ test "(+ 1m4 (* 2m4 (i. 5)))"
-
-  -- putStrLn $ show $ jValue $ Natural 3
-  -- putStrLn $ show $ jValue $ Finite 3 4
-  -- putStrLn $ show $ jValue $ Finite 3 4
-  -- putStrLn $ show $ jValue $ Quoted $ Array [Natural 3, Natural 4]
-  -- putStrLn $ show $ jValue $ Quoted $ Array [Symbol "+", Natural 3, Natural 4]
-  -- putStrLn $ show $ jValue $ Array [Symbol "+", Natural 3, Natural 4]
-  -- putStrLn $ show $ jValue $ Array [Symbol "+", Natural 3, Finite 2 4]
+  -- putStrLn $ show $ ConsList [Symbol "+", ConsList [Symbol "+", Array0 (Natural 1), Array1 [Natural 3, Natural 4]],
+  --                                                  ConsList [Symbol "+", Array0 (Natural 5), Array1 [Natural 3, Natural 4]]]
 
 
+  -- putStrLn $ show $ jValue $ ConsList [Symbol "i.", Array0 (Natural 4)]
+  -- putStrLn $ show $ jValue $ ConsList [Symbol "i.", Array0 (Natural 0)]
+  -- putStrLn $ show $ jValue $ ConsList [Symbol "i.", Array0 (Natural 1)]
+
+  -- -- putStrLn $ show $ jValue $ ConsList [Symbol "+", ConsList [Symbol "+", Array0 (Natural 1), Array1 [Natural 3, Natural 4]]]
+  -- -- putStrLn $ show $ ConsList [Symbol "+", ConsList [Symbol "+", Array0 (Natural 1), Array1 [Natural 3, Natural 4]]]
+
+  -- 
+  -- putStrLn $ show $ parseExpr "(asdf asdf)"
+  -- putStrLn $ show $ parseExpr "[asdf asdf]"
+  -- putStrLn $ show $ parseExpr "[1 3]"
+  -- putStrLn $ show $ parseExpr "[[1 3] [4 5]]"
+  -- putStrLn $ show $ parseExpr "[[1 3] [4 5] 4]"
+  -- putStrLn $ show $ parseExpr "[1m3 4 m 4]"
+  -- putStrLn $ show $ parseExpr "[1m3 4m4]"
+
+  -- putStrLn $ test "(+ [1 3] [4 5])"
+  -- putStrLn $ show $ parseExpr "(* 3 [4 5])"
+  -- putStrLn $ test "(* 3 [4 5])"
+  -- putStrLn $ test "(* 3 (i. 5))"
+  -- -- putStrLn $ test "(* 1m10 (i. 5))"
+
+  -- putStrLn $ test "(* 2m4 (i. 5))"
+  -- putStrLn $ test "(+ 1m4 (* 2m4 (i. 5)))"
+
+  -- putStrLn $ test "(+ 1 [0 3m4 6m2])"
+  -- putStrLn $ test "(+ 1 [0 3m4 6m2])"
+  -- putStrLn $ test "(i. 4)"
+  -- putStrLn $ test "(+ 0m4 (i. 8))"
+  -- putStrLn $ test "(+ 3 4)"
+  putStrLn $ test "(/ + 0 [3 4 5 6])"
+  putStrLn $ test "(/ * 1 [1 2 3 4])"
