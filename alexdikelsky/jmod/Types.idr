@@ -24,6 +24,14 @@ Context : Type
 Context = List (String, Expr)
 
 public export
+truth : NonRec
+truth = Finite 1 2
+
+public export
+falsehood : NonRec
+falsehood = Finite 0 2
+
+public export
 Show NonRec where
   show (Natural n) = show n
   show (Finite n k) = (show n) ++ "m" ++ (show k)
@@ -32,7 +40,7 @@ public export
 Show Expr where
   show (Array0 z) = show z
   show (Array1 k) = "[" ++ (foldr (\x => \y => x ++ " " ++ y) "" (map show k)) ++ "]"
-  show (Array2 k) = "{" ++ (foldr (\x => \y => x ++ "\n " ++ y) "" (map show k)) ++ "}"
+  show (Array2 k) = "{\n " ++ (foldr (\x => \y => x ++ "\n " ++ y) "" (map show k)) ++ "}"
   show (ConsList k) = "(" ++ (foldr (\x => \y => x ++ " " ++ y) "" (map show k)) ++ ")"
   show (Function _) = "Function"
   show (Symbol k) = show k

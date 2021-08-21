@@ -45,3 +45,9 @@ public export
 modNumbers : NonRec -> NonRec -> Either NonRec String
 modNumbers (Natural a) (Natural b) = Left $ Natural $ a `mod` b
 modNumbers a b = Right $ "Can't mod " ++ (show a) ++ " by " ++ (show b)
+
+public export
+eqNumbers : NonRec -> NonRec -> Either NonRec String
+eqNumbers (Natural a) (Natural b) = Left $ if a == b then truth else falsehood 
+eqNumbers (Finite a b) (Finite c d) = Left $ if (a == c) && (b == d) then truth else falsehood
+eqNumbers _ _ = Left $ falsehood

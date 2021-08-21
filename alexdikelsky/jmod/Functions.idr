@@ -3,6 +3,7 @@ module Functions
 import Types
 import BinaryOperations
 import Fold
+import Data.List
 
 import Debug.Trace
 
@@ -103,6 +104,14 @@ public export
 div : Expr -> Either Expr String
 div = mapF divNumbers $ Left $ Array0 $ Natural 1
 
+public export
+eq : Expr -> Either Expr String
+eq = mapF eqNumbers $ Left $ Array0 $ truth
+
+public export
+trans : Expr -> Either Expr String
+trans (ConsList ((Array2 x) :: Nil)) = Left (Array2 (transpose x))
+trans a = Right $ "Called Transpose on non matrix " ++ show a
 
 public export
 fold : Expr -> Expr -> Expr -> Either Expr String
@@ -110,8 +119,15 @@ fold (Function f) _ (Array0 l) = f (Array0 l)
 fold (Function f) i (Array1 Nil) = Left i
 fold (Function f) i (Array1 (x :: xs)) =
   case fold (Function f) i (Array1 xs) of
-       Left r => f (ConsList [Array0 x, r])
-       Right r => Right r
+     Left r => f (ConsList [Array0 x, r])
+     Right r => Right r
+
+fold (Function f) i (Array2 Nil) = Left i
+fold (Function f) i (Array2 (x :: xs)) =
+  case fold (Function f) i (Array2 xs) of
+    Left r => f (ConsList [Array1 x, r])
+    Right r => Right r
+
 fold _ _ s = Right $ "Unimplemted fold on " ++ (show s)
 
 public export

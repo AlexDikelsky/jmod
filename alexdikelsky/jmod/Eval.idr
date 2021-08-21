@@ -46,4 +46,6 @@ jValue k =
     ("*", Function mult),
     ("%", Function div),
     ("i.", Function iota),
-    ("/", Function foldUse)]
+    ("/", Function foldUse),
+    ("|:", Function trans),
+    ("=", Function eq)]
