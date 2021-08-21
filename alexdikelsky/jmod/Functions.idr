@@ -2,6 +2,7 @@ module Functions
 
 import Types
 import BinaryOperations
+import Fold
 
 mapUnless : (a -> Either b String) -> List a -> Either (List b) String
 mapUnless f [] = Left []
@@ -83,6 +84,14 @@ applyF f i (ConsList (x :: xs)) =
 
 applyF _ e _ = Right $ "Not implemented " ++ show e
 
+public export
+iota : Expr -> Either Expr String
+iota (ConsList Nil) = Right "No argument supplied to i."
+iota (ConsList (Array0 (Natural x) :: Nil)) = 
+  Left $ Array1 $ case x of
+       0 => []
+       x => (map (\x => Natural (cast x)) [0 .. ((cast x) - 1)])
+iota _ = Right "sdf"
 
 public export
 add : Expr -> Either Expr String
@@ -95,4 +104,3 @@ mult = applyF multNumbers $ Left $ Array0 $ Natural 1
 public export
 div : Expr -> Either Expr String
 div = applyF divNumbers $ Left $ Array0 $ Natural 1
-

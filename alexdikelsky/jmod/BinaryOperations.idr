@@ -7,7 +7,7 @@ public export
 addNumbers : NonRec -> NonRec -> Either NonRec String
 addNumbers (Natural n) (Natural k) = Left $ Natural $ n + k
 addNumbers (Natural n) (Finite k m1) = Left $ Finite ((n + k) `mod` m1) m1
-addNumbers (Finite n m1) (Natural k) = addNumbers (Finite n m1) (Natural k)
+addNumbers (Finite n m1) (Natural k) = addNumbers (Natural k) (Finite n m1)
 addNumbers (Finite n m1) (Finite k m2) =
   if m2 == m1 then Left $ Finite ((n + k) `mod` m1) m1
               else Right $ "Added numbers with modulus " ++ (show m1) ++ " and " ++ (show m2)
@@ -16,7 +16,7 @@ public export
 multNumbers : NonRec -> NonRec -> Either NonRec String
 multNumbers (Natural n) (Natural k) = Left $ Natural $ n * k
 multNumbers (Natural n) (Finite k m1) = Left $ Finite ((n * k) `mod` m1) m1
-multNumbers (Finite n m1) (Natural k) = multNumbers (Finite n m1) (Natural k)
+multNumbers (Finite n m1) (Natural k) = multNumbers (Natural k) (Finite n m1)
 multNumbers (Finite n m1) (Finite k m2) =
   if m2 == m1 then Left $ Finite ((n * k) `mod` m1) m1
               else Right $ "Modulus mismatch " ++ (show m1) ++ " and " ++ (show m2)

@@ -7,7 +7,6 @@ import Data.Nat
 import Data.List
 
 
-
 symValue : String -> Context -> Either Expr String
 symValue s ctx = 
   case lookup s ctx of
@@ -44,4 +43,5 @@ jValue k =
   exprValue k [
     ("+", Function add),
     ("*", Function mult),
-    ("%", Function div)]
+    ("%", Function div),
+    ("i.", Function iota)]
