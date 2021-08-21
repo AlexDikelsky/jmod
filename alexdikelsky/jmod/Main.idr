@@ -60,17 +60,17 @@ main = do
   putStrLn $ show $ parseExpr "[1 3]"
   putStrLn $ show $ parseExpr "[[1 3] [4 5]]"
   putStrLn $ show $ parseExpr "[[1 3] [4 5] 4]"
-  putStrLn $ show $ parseExpr "[1_3 4 _ 4]"
-  putStrLn $ show $ parseExpr "[1_3 4_4]"
+  putStrLn $ show $ parseExpr "[1m3 4 m 4]"
+  putStrLn $ show $ parseExpr "[1m3 4m4]"
 
   putStrLn $ test "(+ [1 3] [4 5])"
   putStrLn $ show $ parseExpr "(* 3 [4 5])"
   putStrLn $ test "(* 3 [4 5])"
   putStrLn $ test "(* 3 (i. 5))"
-  -- putStrLn $ test "(* 1_10 (i. 5))"
+  -- putStrLn $ test "(* 1m10 (i. 5))"
 
-  putStrLn $ test "(* 2_4 (i. 5))"
-  putStrLn $ test "(+ 1_4 (* 2_4 (i. 5)))"
+  putStrLn $ test "(* 2m4 (i. 5))"
+  putStrLn $ test "(+ 1m4 (* 2m4 (i. 5)))"
 
   -- putStrLn $ show $ jValue $ Natural 3
   -- putStrLn $ show $ jValue $ Finite 3 4

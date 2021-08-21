@@ -20,7 +20,7 @@ where
 modLit : Parser NonRec
 modLit = do
   x <- some digit
-  token "_"
+  token "m"
   y <- some digit
   pure (Finite (getNatural x) (getNatural y))
 where 
