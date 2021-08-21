@@ -5,9 +5,7 @@ import BinaryOperations
 import Fold
 import Data.List
 
-import Debug.Trace
-
-
+public export
 mapUnless : (a -> Either b String) -> List a -> Either (List b) String
 mapUnless f [] = Left []
 mapUnless f (x :: xs) =
@@ -107,6 +105,10 @@ div = mapF divNumbers $ Left $ Array0 $ Natural 1
 public export
 eq : Expr -> Either Expr String
 eq = mapF eqNumbers $ Left $ Array0 $ truth
+
+public export
+gcd : Expr -> Either Expr String
+gcd = mapF gcdNumbers $ Left $ Array0 $ Natural 0
 
 public export
 trans : Expr -> Either Expr String

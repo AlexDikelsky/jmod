@@ -8,6 +8,7 @@ public export
 data NonRec =
   Natural Nat
 | Finite Nat Nat
+| Character Char
 
 public export
 data Expr =
@@ -35,6 +36,7 @@ public export
 Show NonRec where
   show (Natural n) = show n
   show (Finite n k) = (show n) ++ "m" ++ (show k)
+  show (Character c) = "'" ++ (show c) ++ "'"
 
 public export
 Show Expr where

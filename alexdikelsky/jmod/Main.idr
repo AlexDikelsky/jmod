@@ -85,3 +85,5 @@ main = do
   putStrLn $ test "(/ * 1 (|: [[2 3 5] [7 11 13]]))"
   putStrLn $ test "(= 1 [[2 1 5] [7 11 13]])"
   putStrLn $ test "(= 1 [2 3 5])"
+  putStrLn $ test "(* (+ 0m15 (i. 16)) (+ 0m15 (i. 16)))"
+  putStrLn $ test "(+ 3 [0m5 1m5 2m5 3m5 4m5])"
