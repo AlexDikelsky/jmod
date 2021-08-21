@@ -21,10 +21,6 @@ data Expr =
 | Quoted Expr
 
 public export
-Context : Type
-Context = List (String, Expr)
-
-public export
 truth : NonRec
 truth = Finite 1 2
 
@@ -45,5 +41,5 @@ Show Expr where
   show (Array2 k) = "{\n " ++ (foldr (\x => \y => x ++ "\n " ++ y) "" (map show k)) ++ "}"
   show (ConsList k) = "(" ++ (foldr (\x => \y => x ++ " " ++ y) "" (map show k)) ++ ")"
   show (Function _) = "Function"
-  show (Symbol k) = show k
+  show (Symbol k) = k
   show (Quoted n) = "'" ++ show n

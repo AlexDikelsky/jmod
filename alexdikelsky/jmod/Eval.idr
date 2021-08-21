@@ -26,12 +26,6 @@ lookupName sym symList (ConsList valueList) =
     Right s => Right s
 lookupName s _ _ = Right $ "Incorrect args for lookup of " ++ (show s)
 
-symValue : String -> Context -> Either Expr String
-symValue s ctx = 
-  case lookup s ctx of
-       Just v => Left v
-       Nothing => Right $ "Couldn't find " ++ s
-
 mutual
   exprListValue : List Expr -> Expr -> Expr -> Either (List Expr) String
   exprListValue Nil _ _ = Left Nil
@@ -49,18 +43,29 @@ mutual
   exprValue (Quoted x) syms values = Left x
   exprValue (Function f) syms values = Left $ Function f
   
-  -- exprValue (ConsList (Symbol "λ" :: (ConsList syms) :: body :: Nil)) ctx =
-  --   Left $ (ConsList [Symbol "*closure*", (ConsList syms), body, ctx])
+  exprValue (ConsList [Symbol "λ", bindings, body]) syms values =
+    Left $ (ConsList [Symbol "__closure", bindings, body, syms, values])
 
-  exprValue (ConsList Nil) syms values = Right "Called ()"
-  exprValue (ConsList (x::xs)) syms values =
-    case (exprValue x syms values, exprListValue xs syms values) of
-         (Left (Function f), Left args) => f (ConsList args)
-         _ => Right "Tried to call a non-function"
+  exprValue (ConsList (x :: xs)) syms value =
+    case (exprValue x syms value, exprListValue xs syms value) of
+         (Left f, Left arglist) => applyValue f (ConsList arglist) syms value
+         _ => Right "Failed at exprvalue"
 
+  exprValue _ _ _ = Right "Failed to apply"
+
+  applyValue : Expr -> Expr -> Expr -> Expr -> Either Expr String
+  applyValue (ConsList [Symbol "__closure", (ConsList symList), body, ConsList oldSyms, ConsList oldValues]) (ConsList arglist) _ _ =
+    exprValue body (ConsList (symList ++ oldSyms)) (ConsList (arglist ++ oldValues))
+  applyValue (Function f) (ConsList arglist) syms values =
+    case exprListValue arglist syms values of
+         Left args => f (ConsList args)
+         _ => Right "Unable to apply"
+  applyValue _ _ _ _ = Right "Failed to apply"
+
+  
 
 public export
 jValue : Expr -> Either Expr String
 jValue k =
-  exprValue k (ConsList (map (\x => Symbol x) ["+", "*", "%", "i.",  "/", "|:", "="]))
-              (ConsList (map (\x => Function x) [add, mult, div, iota, foldUse, trans, eq]))
+  exprValue k (ConsList (map Symbol   ["+", "*", "%", "i.",  "/", "|:", "="]))
+              (ConsList (map Function [add, mult, div, iota, foldUse, trans, eq]))

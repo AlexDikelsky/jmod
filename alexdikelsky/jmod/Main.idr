@@ -5,6 +5,9 @@ import Types
 import Functions
 import Parser
 
+ycomb : String
+ycomb = "(λ (b) ((λ (f) (b (λ (x) ((f f) x)))) (λ (f) (b (λ (x) ((f f) x))))))"
+
 test : String -> String
 test s =
   case parseExpr s of
@@ -87,3 +90,16 @@ main = do
   putStrLn $ test "(= 1 [2 3 5])"
   putStrLn $ test "(* (+ 0m15 (i. 16)) (+ 0m15 (i. 16)))"
   putStrLn $ test "(+ 3 [0m5 1m5 2m5 3m5 4m5])"
+
+  putStrLn $ test "(λ (x) (+ x 3))"
+  putStrLn $ test "((λ (x) (+ x 3)) [4 5])"
+
+  putStrLn $ test "((λ (x y) (+ x y)) 4 5)"
+  putStrLn $ test "(λ (f g) (λ (x) (f (g x))))"
+  putStrLn $ test "((λ (f g) (λ (x) (f (g x)))) (λ (x) (+ 1 x)) (λ (x) (* 2 x)))"
+  putStrLn $ test "(((λ (f g) (λ (x) (f (g x)))) (λ (x) (/ + 0 x)) |:) [[3 4] [5 6]])"
+
+  -- putStrLn $ test ycomb
+  -- putStrLn $ case parseExpr ycomb of
+  --                 Left a => ?sdf
+  --                 Right a => show a

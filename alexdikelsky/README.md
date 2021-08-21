@@ -12,13 +12,13 @@ unlike J. For instance:
 > 5m4
 1m4
 
-> 1 + 3m4
+> (+ 1 3m4)
 0m4
 
 > (+ 1 [0 3m4 6m2])
-(1 0m4 1m2)
+[1 0m4 1m2]
 
-> ((" / 1) + '(1m2 0m2 1m2))
+> (/ + 0 '(1m2 0m2 1m2)))
 0m2
 
 > (i. 4)
@@ -27,24 +27,17 @@ unlike J. For instance:
 > (+ 0m4 (i. 8))
 [0m4 1m4 2m4 3m4 0m4 1m4 2m4 3m4 ]
 
+```
 
-> (i. 4m2 2)
-Type error
+Lambdas are supported
 
-> (:= y ($ '(2 2) (i. 4 4)))
-> y
-((0m4 1m4) 
- (2m4 3m4))
+```
+> ((λ (x) (+ x 3)) [4 5])
+[7 8]
 
-> ((" / 0) + y)   NB. Sum across every element (doesn't do anything)
-((0m4 1m4) 
- (2m4 3m4))
-
-> ((" / 1) + y)   NB. Sum across the first list
-(1m4 1m4)
-
-> ((" / 2) + y)   NB. Sym across the first column
-(2m4 0m4)
+> NB. Compose summming a vector with transposition, returning the summed vectors
+> (((λ (f g) (λ (x) (f (g x)))) (λ (x) (/ + 0 x)) |:) [[3 4] [5 6]])
+[7 11]
 ```
 
 
