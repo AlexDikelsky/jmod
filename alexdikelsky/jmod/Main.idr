@@ -1,9 +1,14 @@
 module Main
 
+import Control.App
+import Control.App.FileIO
+import System.Console.GetOpt
+import System.File
 import Eval
 import Types
 import Functions
 import Parser
+import System
 
 ycomb : String
 ycomb = "(λ (b) ((λ (f) (b (λ (x) ((f f) x)))) (λ (f) (b (λ (x) ((f f) x))))))"
@@ -11,11 +16,24 @@ ycomb = "(λ (b) ((λ (f) (b (λ (x) ((f f) x)))) (λ (f) (b (λ (x) ((f f) x)))
 test : String -> String
 test s =
   case parseExpr s of
-       Right (x, _) => show (jValue x)
-       Left k => show k
+       Right (x, _) => case jValue x of
+                            Left s => show s
+                            Right s => "Execution failed with " ++ show s
+       Left k => "Parse failed with " ++ show k
+
+stringEither : Show a => Either a b -> Either String b
+stringEither = bimap show id
+
 
 main : IO ()
 main = do
+  fname <- getLine
+  f <- readFile fname 
+  out <- pure $ case stringEither f of
+                     Left s => s
+                     Right s => test s
+  putStrLn out
+
   -- putStrLn $ show $ Array2 [[Natural 4], [Natural 5]]
   -- putStrLn $ show $ ConsList [Array2 [[Natural 4], [Natural 5]],  ConsList [Symbol "sfd"]]
   -- putStrLn $ show $ ConsList [Symbol "+"]
@@ -128,15 +146,15 @@ main = do
   -- putStrLn $ test "(let ((fizz (lift (=z (zip (+ 0m3 (+ 1 (i. 15))) (+ 0m5 (+ 1 (i. 15)))))))) (+ (/ + 0 (* 5 (cdr (car (|: fizz))))) (/ + 0 (* 3 (car (|: fizz))))))"
 
 
-  putStrLn $ test $ "((λ (n) (/ + 0 (/ + 0 " ++ 
-   "(let " ++ 
-     "((fizz (transpose (is-zero (zip (+ 0m3 (i. n)) (+ 0m5 (i. n)) (+ 0m15 (i. n))))))) " ++
-    "(zip " ++
-      "(* (car (lift fizz)) (i. n)) " ++
-      "(* " ++
-         "(* (car (cdr (lift fizz))) (i. n)) " ++
-         "(lift (not (car (cdr (cdr fizz))))))))))) " ++
-   "1000)"
+  -- putStrLn $ test $ "((λ (n) (/ + 0 (/ + 0 " ++ 
+  --  "(let " ++ 
+  --    "((fizz (transpose (is-zero (zip (+ 0m3 (i. n)) (+ 0m5 (i. n)) (+ 0m15 (i. n))))))) " ++
+  --   "(zip " ++
+  --     "(* (car (lift fizz)) (i. n)) " ++
+  --     "(* " ++
+  --        "(* (car (cdr (lift fizz))) (i. n)) " ++
+  --        "(lift (not (car (cdr (cdr fizz))))))))))) " ++
+  --  "1000)"
 
   -- putStrLn $ test "(/ (λ (x y) (+ x y)) 0 [1 2 3])"
   -- putStrLn $ test "(/ (λ (x) (λ (y) (+ x y))) 0 [1 2 3])"

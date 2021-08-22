@@ -64,7 +64,7 @@ mutual
     case (exprValue x syms value, exprListValue xs syms value) of
          (Left f, Left arglist) => applyValue f (ConsList arglist) syms value
          (Right s, _) => Right $ "Failed at exprvalue, op was " ++ (show s)
-         _ => Right "Filaed at exprvalue"
+         _ => Right "Failed when applying"
 
   exprValue _ _ _ = Right "Failed to apply"
 
