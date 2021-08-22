@@ -3,6 +3,8 @@ import Types
 import Data.Nat
 import NumberTheory
 
+import Data.Nat.Division
+
 public export
 addNumbers : NonRec -> NonRec -> Either NonRec String
 addNumbers (Natural n) (Natural k) = Left $ Natural $ n + k
@@ -25,7 +27,7 @@ multNumbers a b = Right $ "Failed to mult " ++ (show a) ++ " and " ++ (show b)
 
 public export
 divNumbers : NonRec -> NonRec -> Either NonRec String
-divNumbers (Natural n) (Natural k) = Left $ Natural $ n `div` k
+divNumbers (Natural n) (Natural k) = Left $ Natural $ div'' n k
 divNumbers (Natural n) (Finite k m1) = 
   case modinverse (cast k) m1 of
        Left o => Left $ Finite ((o * n) `mod` m1) m1

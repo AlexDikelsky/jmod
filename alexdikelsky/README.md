@@ -35,10 +35,7 @@ Lambdas are supported
 > ((λ (x) (+ x 3)) [4 5])
 [7 8]
 
-> NB. Compose summming a vector with transposition, returning the summed vectors
 > (((λ (f g) (λ (x) (f (g x)))) (λ (x) (/ + 0 x)) |:) [[3 4] [5 6]])
 [7 11]
 ```
 
-
-First-in-class comments are created with `NB.` until the end of line.
