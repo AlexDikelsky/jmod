@@ -101,8 +101,42 @@ main = do
 
   -- putStrLn $ test "(/ + 0 [1 2 3])"
 
-  putStrLn $ test "(let ((a 3) (b 4)) (+ a b))"
-  putStrLn $ test "((λ (a b) (+ a b)) 3 4)" 
+  -- putStrLn $ test "(let ((a 3) (b 4)) (+ a b))"
+  -- putStrLn $ test "((λ (a b) (+ a b)) 3 4)" 
+  -- putStrLn $ test "(% 1m13 (+ 1 (i. 12)))"
+
+  -- putStrLn $ test "(lift (=z (zip (+ 0m3 (i. 15)) (+ 0m5 (i. 15)))))"
+
+  -- putStrLn $ test "(let ((fizz (lift (=z (zip (+ 0m3 (i. 15)) (+ 0m5 (i. 15))))))) (zip (* (car (cdr (|: fizz))) (i. 15)) (* (car (|: fizz)) (i. 15))))"
+
+  -- putStrLn $ test $ "(let ((fizz (lift (=z (zip (+ 0m3 (i. 10)) (+ 0m5 (i. 10)) (+ 0m15 (i. 10)))))))" ++
+  --                     "(+ (/ + 0 (* (car (cdr (|: fizz))) (i. 10))) (/ + 0 (* (car (|: fizz)) (i. 10)))))"
+
+  -- putStrLn $ test $ "(let " ++ 
+  -- "((fizz (|: (lift (=z (zip (+ 0m3 (i. 10)) (+ 0m5 (i. 10)) (+ 0m15 (i. 10))))))))" ++
+  -- "(zip (* (car fizz) (i. 10)) (* (car (cdr fizz)) (i. 10)) (* (car (cdr (cdr fizz))) (i. 10))))"
+
+  -- putStrLn $ test $ "((λ (n) (let " ++ 
+  -- "((fizz (|: (=z (zip (+ 0m3 (i. n)) (+ 0m5 (i. n)) (+ 0m15 (i. n))))))) " ++ 
+  -- "(zip (* (car (lift fizz)) (i. n)) (* (* (car (cdr (lift fizz))) (i. n)) (lift (not (car (cdr (cdr fizz))))))))) " ++
+  -- "20)"
+
+  -- putStrLn $ test $ "((λ (n) (/ + 0 (/ + 0 (let " ++ 
+  -- "((fizz (|: (=z (zip (+ 0m3 (i. n)) (+ 0m5 (i. n)) (+ 0m15 (i. n))))))) " ++ 
+  -- "(zip (* (car (lift fizz)) (i. n)) (* (* (car (cdr (lift fizz))) (i. n)) (lift (not (car (cdr (cdr fizz))))))))))) " ++
+  -- "1000)"
+  -- putStrLn $ test "(let ((fizz (lift (=z (zip (+ 0m3 (+ 1 (i. 15))) (+ 0m5 (+ 1 (i. 15)))))))) (+ (/ + 0 (* 5 (cdr (car (|: fizz))))) (/ + 0 (* 3 (car (|: fizz))))))"
+
+
+  putStrLn $ test $ "((λ (n) (/ + 0 (/ + 0 " ++ 
+   "(let " ++ 
+     "((fizz (transpose (is-zero (zip (+ 0m3 (i. n)) (+ 0m5 (i. n)) (+ 0m15 (i. n))))))) " ++
+    "(zip " ++
+      "(* (car (lift fizz)) (i. n)) " ++
+      "(* " ++
+         "(* (car (cdr (lift fizz))) (i. n)) " ++
+         "(lift (not (car (cdr (cdr fizz))))))))))) " ++
+   "1000)"
 
   -- putStrLn $ test "(/ (λ (x y) (+ x y)) 0 [1 2 3])"
   -- putStrLn $ test "(/ (λ (x) (λ (y) (+ x y))) 0 [1 2 3])"

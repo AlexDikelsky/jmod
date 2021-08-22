@@ -82,5 +82,5 @@ mutual
 public export
 jValue : Expr -> Either Expr String
 jValue k =
-  exprValue k (ConsList (map Symbol   ["+", "*", "%", "i.",  "/", "|:", "="]))
-              (ConsList (map Function [add, mult, div, iota, foldUse, trans, eq]))
+  exprValue k (ConsList (map Symbol   ["+", "*", "%", "i.",  "/", "transpose", "=", "zip", "is-zero", "lift", "car", "cdr", "not"]))
+              (ConsList (map Function [add, mult, div, iota, foldUse, trans, eq, zipA, isZero, lift, car, cdr,  notN]))

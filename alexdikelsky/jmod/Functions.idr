@@ -4,6 +4,7 @@ import Types
 import BinaryOperations
 import Fold
 import Data.List
+import UnaryOperations
 
 public export
 mapUnless : (a -> Either b String) -> List a -> Either (List b) String
@@ -81,6 +82,23 @@ mapF f i (ConsList (x :: xs)) =
      (a, b) => Right $ "First " ++ (show a) ++ " second " ++ (show b)
 mapF _ e _ = Right $ "Not implemented " ++ show e
 
+mapFF : (NonRec -> Either NonRec String) -> (Either Expr String)
+        -> Expr -> Either Expr String
+mapFF f i (ConsList Nil) = i
+mapFF f i (ConsList (Array0 e :: Nil)) = 
+  case (f e) of 
+       Left v => Left $ Array0 v
+       Right s => Right s
+mapFF f i (ConsList (Array1 e :: Nil)) = 
+  case mapUnless f e of
+       Left v => Left $ Array1 v
+       Right s => Right s
+mapFF f i (ConsList (Array2 e :: Nil)) =
+  case mapUnless (\x => mapUnless f x) e of
+     Left z => Left $ Array2 z
+     Right s => Right s
+mapFF _ _ _ = Right "Not found"
+
 public export
 iota : Expr -> Either Expr String
 iota (ConsList Nil) = Right "No argument supplied to i."
@@ -116,6 +134,38 @@ trans (ConsList ((Array2 x) :: Nil)) = Left (Array2 (transpose x))
 trans a = Right $ "Called Transpose on non matrix " ++ show a
 
 public export
+isZero : Expr -> Either Expr String
+isZero = mapFF isZeroNum $ Left $ Array0 falsehood
+
+public export
+lift : Expr -> Either Expr String
+lift = mapFF liftNum $ Left $ Array0 falsehood
+
+public export
+notN : Expr -> Either Expr String
+notN = mapFF not $ Left $ Array0 falsehood
+
+public export
+zipA : Expr -> Either Expr String
+zipA (ConsList ((Array1 a) :: (Array1 b) :: Nil)) =
+  Left $ Array2 $ (map (\(a, b) => a :: b :: Nil) (zip a b))
+zipA (ConsList ((Array1 a) :: (Array1 b) :: (Array1 c) :: Nil)) =
+  Left $ Array2 $ (map (\(a, b, c) => a :: b :: c :: Nil) (zip3 a b c))
+zipA _ = Right $ "failed zip"
+
+public export
+car : Expr -> Either Expr String
+car (ConsList [Array1 (x :: xs)]) = Left (Array0 x)
+car (ConsList [Array2 (x :: xs)]) = Left (Array1 x)
+car _ = Right "Car of wrong size"
+
+public export
+cdr : Expr -> Either Expr String
+cdr (ConsList [Array1 (x :: xs)]) = Left (Array1 xs)
+cdr (ConsList [Array2 (x :: xs)]) = Left (Array2 xs)
+cdr _ = Right "cdr of wrong size"
+
+public export
 fold : Expr -> Expr -> Expr -> Either Expr String
 fold (Function f) _ (Array0 l) = f (Array0 l)
 fold (Function f) i (Array1 Nil) = Left i
@@ -138,4 +188,3 @@ foldUse (ConsList ((Function f) :: (i :: (xs :: Nil)))) =
   fold (Function f) i xs
 
 foldUse f = Right $ "Failed on folduse" ++ (show f)
-

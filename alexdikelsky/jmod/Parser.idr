@@ -60,7 +60,8 @@ symbol : Parser Expr
 symbol = do
   x <- some (letter <|> (char '-') 
         <|> (char '+') <|> (char '*') <|> (char '.') <|> (char '/')
-        <|> (char '|') <|> (char ':') <|> (char '=') <|> (char 'λ')) 
+        <|> (char '|') <|> (char ':') <|> (char '=') <|> (char 'λ')
+        <|> (char '%') <|> (char '-')) 
   pure (Symbol (pack x))
 
 emptyList : Parser Expr

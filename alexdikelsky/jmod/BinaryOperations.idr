@@ -56,6 +56,14 @@ eqNumbers (Finite a b) (Finite c d) = Left $ if (a == c) && (b == d) then truth 
 eqNumbers _ _ = Left $ falsehood
 
 public export
+badNumbers : NonRec -> NonRec -> Either NonRec String
+badNumbers (Natural a) (Natural b) = Left $ if a == b then truth else falsehood 
+badNumbers (Finite a b) (Finite c d) = Left $ if (a == c) then truth else falsehood
+badNumbers (Natural a) (Finite c d) = badNumbers (Natural a) (Natural c)
+badNumbers (Finite a b) (Natural c) = badNumbers (Natural a) (Natural c)
+badNumbers _ _ = Left $ falsehood
+
+public export
 gcdNumbers : NonRec -> NonRec -> Either NonRec String
 gcdNumbers (Natural a) (Natural b) = 
   let gcd = fst (xgcd (cast a) (cast b)) in
