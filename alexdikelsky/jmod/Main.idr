@@ -99,6 +99,12 @@ main = do
   putStrLn $ test "((λ (f g) (λ (x) (f (g x)))) (λ (x) (+ 1 x)) (λ (x) (* 2 x)))"
   putStrLn $ test "(((λ (f g) (λ (x) (f (g x)))) (λ (x) (/ + 0 x)) |:) [[3 4] [5 6]])"
 
+  putStrLn $ test "(/ + 0 [1 2 3])"
+
+  putStrLn $ test "(let ((a 3) (b 4)) (+ a b))"
+  -- putStrLn $ test "(/ (λ (x y) (+ x y)) 0 [1 2 3])"
+  -- putStrLn $ test "(/ (λ (x) (λ (y) (+ x y))) 0 [1 2 3])"
+
   -- putStrLn $ test ycomb
   -- putStrLn $ case parseExpr ycomb of
   --                 Left a => ?sdf

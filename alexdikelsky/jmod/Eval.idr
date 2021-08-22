@@ -26,13 +26,17 @@ lookupName sym symList (ConsList valueList) =
     Right s => Right s
 lookupName s _ _ = Right $ "Incorrect args for lookup of " ++ (show s)
 
+makeClosure : Expr -> Expr -> Expr -> Expr -> Expr
+makeClosure bindings body syms values = 
+  (ConsList [Symbol "__closure", bindings, body, syms, values])
+
 mutual
   exprListValue : List Expr -> Expr -> Expr -> Either (List Expr) String
   exprListValue Nil _ _ = Left Nil
   exprListValue (x :: xs) syms values =
     case (exprValue x syms values, exprListValue xs syms values) of
          (Left e, Left r) => Left $ e :: r
-         _ => Right "Sorry."
+         _ => Right $ "Unable to evaluate " ++ (show (x :: xs))
   
   exprValue : Expr -> Expr -> Expr -> Either Expr String
   exprValue (Array0 k) syms values = Left $ Array0 k
@@ -44,7 +48,15 @@ mutual
   exprValue (Function f) syms values = Left $ Function f
   
   exprValue (ConsList [Symbol "λ", bindings, body]) syms values =
-    Left $ (ConsList [Symbol "__closure", bindings, body, syms, values])
+    Left $ makeClosure bindings body syms values
+
+  exprValue (ConsList [Symbol "let", (ConsList bindings), body]) syms values =
+     case (mapUnless (\x => case x of
+                          ConsList [Symbol a, b] => Left (Symbol a, b)
+                          _ => Right "Failed to read let") bindings) of
+            (Left bounds) => let (names, vals) = unzip bounds in
+                Left (ConsList ((makeClosure (ConsList names) body syms values) :: vals))
+            (Right _) => Right "Panic"
 
   exprValue (ConsList (x :: xs)) syms value =
     case (exprValue x syms value, exprListValue xs syms value) of
@@ -59,7 +71,7 @@ mutual
   applyValue (Function f) (ConsList arglist) syms values =
     case exprListValue arglist syms values of
          Left args => f (ConsList args)
-         _ => Right "Unable to apply"
+         Right s => Right $ "Unable to apply function to " ++ (show arglist) ++ " got " ++ (show s)
   applyValue _ _ _ _ = Right "Failed to apply"
 
   
