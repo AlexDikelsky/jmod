@@ -40,5 +40,29 @@ Lambdas are supported
 [7 11]
 ```
 
+# Installation and Execution
+1. Install idris2, following the directions here: https://github.com/idris-lang/Idris2/blob/main/INSTALL.md
+2. Clone this repository
+3. Move to the `jmod` directory
+4. Run `idris2 Main.idr --package contrib` to start the repl.
+5. To run a program from a file, type
+```
+:exec main
+<filename>
+```
 
-First-in-class comments are created with `NB.` until the end of line.
+For example,
+```
+alex@alex-virtual-machine ~/programming-languages/jam0001/other-thing/jmod2/alexdikelsky/jmod
+ % idris2 Main.idr --package contrib
+     ____    __     _         ___                                           
+    /  _/___/ /____(_)____   |__ \                                          
+    / // __  / ___/ / ___/   __/ /     Version 0.4.0-4a9f00078
+  _/ // /_/ / /  / (__  )   / __/      https://www.idris-lang.org           
+ /___/\__,_/_/  /_/____/   /____/      Type :? for help                     
+
+Welcome to Idris 2.  Enjoy yourself!
+Main> :exec main
+Enter the filename: fizzbuzz.jmod
+233168
+```
