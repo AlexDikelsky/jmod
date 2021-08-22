@@ -7,6 +7,8 @@ import Fold
 import Data.Nat
 import Data.List
 
+import Debug.Trace
+
 toStrings : Expr -> Either (List String) String
 toStrings (ConsList syms) = 
   mapUnless 
@@ -55,13 +57,14 @@ mutual
                           ConsList [Symbol a, b] => Left (Symbol a, b)
                           _ => Right "Failed to read let") bindings) of
             (Left bounds) => let (names, vals) = unzip bounds in
-                Left (ConsList ((makeClosure (ConsList names) body syms values) :: vals))
+                applyValue (makeClosure (ConsList names) body syms values) (ConsList vals) syms values
             (Right _) => Right "Panic"
 
   exprValue (ConsList (x :: xs)) syms value =
     case (exprValue x syms value, exprListValue xs syms value) of
          (Left f, Left arglist) => applyValue f (ConsList arglist) syms value
-         _ => Right "Failed at exprvalue"
+         (Right s, _) => Right $ "Failed at exprvalue, op was " ++ (show s)
+         _ => Right "Filaed at exprvalue"
 
   exprValue _ _ _ = Right "Failed to apply"
 
