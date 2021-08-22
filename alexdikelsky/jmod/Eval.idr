@@ -44,8 +44,10 @@ mutual
   exprValue (Array2 k) syms values = Left $ Array2 k
 
   exprValue (Symbol x) syms values = lookupName x syms values
-  exprValue (Quoted x) syms values = Left x
   exprValue (Function f) syms values = Left $ Function f
+
+  exprValue (ConsList [Symbol "if", test, trueClause, falseClause]) syms values =
+    ifValue test trueClause falseClause syms values
   
   exprValue (ConsList [Symbol "λ", bindings, body]) syms values =
     Left $ makeClosure bindings body syms values
@@ -66,6 +68,15 @@ mutual
 
   exprValue _ _ _ = Right "Failed to apply"
 
+  ifValue : Expr -> Expr -> Expr -> Expr -> Expr -> Either Expr String
+  ifValue test trueClause falseClause syms values = 
+    case exprValue test syms values of
+         Left (Array0 (Finite 1 2)) => exprValue trueClause syms values
+         Left (Array0 (Finite 0 2)) => exprValue falseClause syms values
+         Left a => Right $ (show a) ++ "Is not true or false"
+         Right s => Right s
+
+
   applyValue : Expr -> Expr -> Expr -> Expr -> Either Expr String
   applyValue (ConsList [Symbol "__closure", (ConsList symList), body, ConsList oldSyms, ConsList oldValues]) (ConsList arglist) _ _ =
     exprValue body (ConsList (symList ++ oldSyms)) (ConsList (arglist ++ oldValues))
@@ -75,10 +86,8 @@ mutual
          Right s => Right $ "Unable to apply function to " ++ (show arglist) ++ " got " ++ (show s)
   applyValue _ _ _ _ = Right "Failed to apply"
 
-  
-
 public export
 jValue : Expr -> Either Expr String
 jValue k =
-  exprValue k (ConsList (map Symbol   ["+", "*", "%", "i.",  "/", "transpose", "=", "zip", "is-zero", "lift", "car", "cdr", "not"]))
-              (ConsList (map Function [add, mult, div, iota, foldUse, trans, eq, zipA, isZero, lift, car, cdr,  notN]))
+  exprValue k (ConsList (map Symbol   ["+", "*", "%", "i.",  "/", "transpose", "=", "zip", "is-zero", "lift", "car", "cdr", "not", "pred"]))
+              (ConsList (map Function [add, mult, div, iota, foldUse, trans, eq, zipA, isZero, lift, car, cdr,  notN, pred]))

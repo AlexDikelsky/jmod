@@ -137,6 +137,10 @@ isZero : Expr -> Either Expr String
 isZero = mapFF isZeroNum $ Left $ Array0 falsehood
 
 public export
+pred : Expr -> Either Expr String
+pred = mapFF predNum $ Right "Pred of nothing"
+
+public export
 lift : Expr -> Either Expr String
 lift = mapFF liftNum $ Left $ Array0 falsehood
 

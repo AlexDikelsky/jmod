@@ -7,8 +7,8 @@ import Data.Nat
 public export
 data NonRec =
   Natural Nat
+| Gaussian Integer Integer
 | Finite Nat Nat
-| Character Char
 
 public export
 data Expr =
@@ -18,7 +18,6 @@ data Expr =
 | ConsList (List Expr)
 | Function (Expr -> Either Expr String)
 | Symbol String
-| Quoted Expr
 
 public export
 truth : NonRec
@@ -32,7 +31,7 @@ public export
 Show NonRec where
   show (Natural n) = show n
   show (Finite n k) = (show n) ++ "m" ++ (show k)
-  show (Character c) = "'" ++ (show c) ++ "'"
+  show (Gaussian n k) = (show n) ++ "i" ++ (show k)
 
 public export
 Show Expr where
@@ -42,4 +41,3 @@ Show Expr where
   show (ConsList k) = "(" ++ (foldr (\x => \y => x ++ " " ++ y) "" (map show k)) ++ ")"
   show (Function _) = "Function"
   show (Symbol k) = k
-  show (Quoted n) = "'" ++ show n

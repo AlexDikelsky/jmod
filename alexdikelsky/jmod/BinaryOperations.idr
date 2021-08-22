@@ -3,8 +3,6 @@ import Types
 import Data.Nat
 import NumberTheory
 
-import Data.Nat.Division
-
 public export
 addNumbers : NonRec -> NonRec -> Either NonRec String
 addNumbers (Natural n) (Natural k) = Left $ Natural $ n + k
@@ -27,7 +25,7 @@ multNumbers a b = Right $ "Failed to mult " ++ (show a) ++ " and " ++ (show b)
 
 public export
 divNumbers : NonRec -> NonRec -> Either NonRec String
-divNumbers (Natural n) (Natural k) = Left $ Natural $ div'' n k
+divNumbers (Natural n) (Natural k) = Left $ Natural $ n `div` k
 divNumbers (Natural n) (Finite k m1) = 
   case modinverse (cast k) m1 of
        Left o => Left $ Finite ((o * n) `mod` m1) m1
@@ -45,6 +43,19 @@ divNumbers (Finite n m1) (Finite k m2) =
                 Right s => Right s
               else Right $ "Modulus mismatch " ++ (show m1) ++ " and " ++ (show m2)
 divNumbers a b = Right $ "Failed to divide " ++ (show a) ++ " and " ++ (show b)
+
+pred : Nat -> Either Nat String
+pred Z = Right "Pred of 0"
+pred (S n) = Left n
+
+public export
+predNum : NonRec -> Either NonRec String
+predNum (Finite _ Z) = Right "Mod 0"
+predNum (Finite Z (S m)) = Left (Finite m (S m))
+predNum (Finite (S n) m) = Left (Finite n m)
+predNum (Natural Z) = Right "Pred 0"
+predNum (Natural (S n)) = Left (Natural n)
+predNum _ = Right "No pred implemented"
 
 public export
 modNumbers : NonRec -> NonRec -> Either NonRec String
