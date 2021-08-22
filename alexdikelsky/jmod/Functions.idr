@@ -2,7 +2,6 @@ module Functions
 
 import Types
 import BinaryOperations
-import Fold
 import Data.List
 import UnaryOperations
 

@@ -2,8 +2,6 @@ module Eval
 
 import Types
 import Functions
-import Fold
-
 import Data.Nat
 import Data.List
 

@@ -27,6 +27,7 @@ stringEither = bimap show id
 
 main : IO ()
 main = do
+  putStr "Enter the filename: "
   fname <- getLine
   f <- readFile fname 
   out <- pure $ case stringEither f of
